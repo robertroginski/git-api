@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GitController!{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        {{ form_start(gitCompareForm) }}
+            <div class="row">
+                <div class="col">{{ form_row(gitCompareForm.first) }}</div>
+                <div class="col">{{ form_row(gitCompareForm.second) }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col">{{ form_row(gitCompareForm.submit) }}</div>
+            </div>
+
+        {{ form_end(gitCompareForm) }}
+
+        <br/><br/>
+
+        <div class="row">
+            <div class="col">
+                {% if firstRepoData %}
+                    {{ include('git/_repo_table.html.twig', {repo: firstRepoData}) }}
+                {% else %}
+                    Not found Git repository
+                {% endif %}
+
+            </div>
+            <div class="col">
+                {% if secondRepoData %}
+                    {{ include('git/_repo_table.html.twig', {repo: secondRepoData}) }}
+                {% else %}
+                    Not found Git repository
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

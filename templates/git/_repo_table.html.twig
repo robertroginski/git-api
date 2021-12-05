@@ -1,0 +1,85 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <td colspan="2">
+            <div>
+                <strong>
+                    {{ repo.fullname }}
+                </strong>
+                <span class="badge bg-info">
+                    {{ repo.language }}
+                </span>
+            </div>
+            <div class="small">
+                <em>{{ repo.description }}</em>
+            </div>
+
+            <div>
+                <a href="{{ repo.html_url }}" target="_blank">
+                    {{ repo.html_url }} &raquo;
+                </a>
+            </div>
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            Number of forks
+        </td>
+        <td>
+            {{ repo.forks }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Subscribers count
+        </td>
+        <td>
+            {{ repo.subscribers_count }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Stars
+        </td>
+        <td>
+            {{ repo.stargazers_count }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Watchers
+        </td>
+        <td>
+            {{ repo.watchers }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Latest release
+        </td>
+        <td>
+            {% if repo.latest_release_date %}
+                {{ repo.latest_release_date|date("Y-m-d H:i") }}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Open pull requests
+        </td>
+        <td>
+            {{ repo.count_pull_request_open }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Closed pull requests
+        </td>
+        <td>
+            {{ repo.count_pull_request_closed }}
+        </td>
+    </tr>
+    </tbody>
+</table>
