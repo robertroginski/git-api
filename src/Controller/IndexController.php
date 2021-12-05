@@ -11,8 +11,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
+
+    /**
+     * @var GitRepositoryInterface
+     */
     private $gitRepository;
 
+    /**
+     * IndexController constructor.
+     * @param GitRepositoryInterface $gitRepository
+     */
     public function __construct(GitRepositoryInterface $gitRepository)
     {
         $this->gitRepository = $gitRepository;

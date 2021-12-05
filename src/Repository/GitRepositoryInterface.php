@@ -2,6 +2,10 @@
 
 namespace App\Repository;
 
+/**
+ * Interface GitRepositoryInterface
+ * @package App\Repository
+ */
 interface GitRepositoryInterface{
 
     public function get(string $repositoryName, string $repoName);

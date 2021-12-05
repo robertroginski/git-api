@@ -2,8 +2,6 @@
 
 namespace App\Model;
 
-use App\Repository\GitRepositoryInterface;
-
 class GitModel{
 
     private $id;

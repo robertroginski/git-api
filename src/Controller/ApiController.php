@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Model\GitModel;
 use App\Repository\GitRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,8 +10,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
+
+    /**
+     * @var GitRepositoryInterface
+     */
     private $gitRepository;
 
+
+    /**
+     * ApiController constructor.
+     * @param GitRepositoryInterface $gitRepository
+     */
     public function __construct(GitRepositoryInterface $gitRepository)
     {
         $this->gitRepository = $gitRepository;

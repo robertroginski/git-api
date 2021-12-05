@@ -3,6 +3,8 @@ Installation
 ```
 git clone https://github.com/robertroginski/git-api ./my-git-api
 
+cd my-git-api/
+
 composer install
 
 npm install
@@ -13,8 +15,6 @@ npm install
 
 
 ```
-cd my-git-api/
-
 symfony server:start
 ```
 

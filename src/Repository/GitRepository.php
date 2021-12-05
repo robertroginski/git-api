@@ -4,49 +4,42 @@ namespace App\Repository;
 
 use App\Model\GitModel;
 use Github\Client;
-use Symfony\Component\HttpKernel\KernelInterface;
 
+/**
+ * Class GitRepository
+ * @package App\Repository
+ */
 class GitRepository implements GitRepositoryInterface {
-
-    /**
-     * @var KernelInterface
-     */
-    private $_kernel;
 
     /**
      * @var Client
      */
     private $_client;
 
+
     /**
      * GitRepository constructor.
      * @param Client $client
      */
-    public function __construct(KernelInterface $kernel, Client $client)
+    public function __construct(Client $client)
     {
-        $this->_kernel = $kernel;
         $this->_client = $client;
     }
 
 
     /**
+     * @link http://developer.github.com/v3/repos/
+     *
      * @param string $repoUsername
      * @param string|null $repoName
      * @return GitModel|null
      */
     public function get(string $repoUsername, string $repoName)
     {
-        $filename = $this->getRepoCacheFilname($repoUsername, $repoName);
-
-        if(file_exists($filename)){
-            $response = json_decode(file_get_contents($filename), true);
-        } else{
-            try {
-                $response = $this->_client->api('repository')->show($repoUsername, $repoName);
-                file_put_contents($filename, json_encode($response));
-            } catch (\Exception $e){
-                return null;
-            }
+        try {
+            $response = $this->_client->api('repository')->show($repoUsername, $repoName);
+        } catch (\Exception $e){
+            return null;
         }
 
         $gitModel = new GitModel($response);
@@ -55,25 +48,31 @@ class GitRepository implements GitRepositoryInterface {
     }
 
 
+    /**
+     * @link https://docs.github.com/en/rest/reference/search#search-issues-and-pull-requests
+     *
+     * @param string $repoUsername
+     * @param string $repoName
+     * @return |null
+     */
     public function getLatestRelease(string $repoUsername, string $repoName)
     {
-        $filename = $this->getRepoCacheFilname($repoUsername, $repoName, 'latest-release');
-
-        if(file_exists($filename)){
-            $response = json_decode(file_get_contents($filename), true);
-        } else {
-
-            try {
-                $response = $this->_client->api('repository')->releases()->latest($repoUsername, $repoName);
-                file_put_contents($filename, json_encode($response));
-            } catch (\Exception $e){
-                return null;
-            }
+        try {
+            $response = $this->_client->api('repository')->releases()->latest($repoUsername, $repoName);
+        } catch (\Exception $e){
+            return null;
         }
 
         return $response;
     }
 
+    /**
+     * @link https://docs.github.com/en/rest/reference/search#search-issues-and-pull-requests
+     *
+     * @param string $repoUsername
+     * @param string $repoName
+     * @return |null
+     */
     public function getCountPullRequestsOpen(string $repoUsername, string $repoName)
     {
         try {
@@ -85,6 +84,13 @@ class GitRepository implements GitRepositoryInterface {
         return $response['total_count'] ?? null;
     }
 
+    /**
+     * @link https://docs.github.com/en/rest/reference/search#search-issues-and-pull-requests
+     *
+     * @param string $repoUsername
+     * @param string $repoName
+     * @return |null
+     */
     public function getCountPullRequestsClosed(string $repoUsername, string $repoName)
     {
         try {
@@ -97,20 +103,20 @@ class GitRepository implements GitRepositoryInterface {
     }
 
 
+    /**
+     * @link http://developer.github.com/v3/issues/#list-issues
+     *
+     * @param $q
+     * @param string $sort
+     * @param string $order
+     * @return |null
+     */
     public function searchIssues($q, $sort = 'updated', $order = 'desc')
     {
-        $filename = $this->_kernel->getProjectDir().'/var/repo/search-issues-'.md5($q.$sort.$order).'.json';
-
-        if(file_exists($filename)){
-            $response = json_decode(file_get_contents($filename), true);
-        } else {
-
-            try {
-                $response = $this->_client->api('search')->issues($q, $sort, $order);
-                file_put_contents($filename, json_encode($response));
-            } catch (\Exception $e){
-                return null;
-            }
+        try {
+            $response = $this->_client->api('search')->issues($q, $sort, $order);
+        } catch (\Exception $e){
+            return null;
         }
 
         return $response;
@@ -156,12 +162,6 @@ class GitRepository implements GitRepositoryInterface {
         $gitData['count_pull_request_closed'] = $this->getCountPullRequestsClosed($repoUsername, $repoName);
 
         return $gitData;
-    }
-
-
-    private function getRepoCacheFilname($username, $reponame, $type = '')
-    {
-        return $this->_kernel->getProjectDir().'/var/repo/'.trim($username.'-'.$reponame.'-'.$type, '-').'.json';
     }
 
 }
