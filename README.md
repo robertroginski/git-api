@@ -31,6 +31,15 @@ REST API
 curl --location --request GET 'http://localhost:8000/api?first=symfony/symfony&second=laravel/laravel'
 ```
 
+TEST
+------------
+
+```
+php ./vendor/bin/phpunit
+```
+
 TODO
 ------------
 * Exception 429 too many requests to GitHub API, actualy limit is 60 requests per hour
+* docker
+
