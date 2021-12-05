@@ -49,7 +49,7 @@ class ApiController extends AbstractController
         {
             $response->setData([
                 'first' => $firstRepoData,
-                'secound' => $secondRepoData,
+                'second' => $secondRepoData,
             ]);
         }
         else {

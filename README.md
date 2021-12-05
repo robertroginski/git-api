@@ -8,6 +8,8 @@ cd my-git-api/
 composer install
 
 npm install
+
+npm run build
 ```
 
 
